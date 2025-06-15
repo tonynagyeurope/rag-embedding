@@ -3,3 +3,4 @@ node_modules/
 vector-store/
 src/data/content/
 src/db/
+.serverless/
