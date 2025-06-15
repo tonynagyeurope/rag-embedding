@@ -18,22 +18,19 @@ The system answers questions about Tony Nagy's professional background and exper
 
 ## Folder Structure
 
+```bash
 rag-embedding/
-│
 ├── data/
-│ └── content/ # JSON documents with embedded content
-│
+│   └── content/            # JSON documents with embedded content
 ├── src/
-│ ├── embedding/ # Embedding utilities (OpenAI or local models)
-│ ├── retrieval/ # Vector search using cosine similarity
-│ ├── generateAnswer.ts # RAG-style response generator
-│ └── utils/ # Chunking, cleaning, etc.
-│
-├── vector-store.json # Precomputed embeddings
-├── askQuestion.ts # Lambda function entry point
-├── serverless.ts # Serverless framework configuration
+│   ├── embedding/          # Embedding utilities (OpenAI or local models)
+│   ├── retrieval/          # Vector search using cosine similarity
+│   ├── utils/              # Chunking, cleaning, etc.
+│   └── generateAnswer.ts   # RAG-style response generator
+├── vector-store.json       # Precomputed embeddings
+├── askQuestion.ts          # Lambda function entry point
+├── serverless.ts           # Serverless framework configuration
 └── README.md
-
 
 ## How It Works
 
