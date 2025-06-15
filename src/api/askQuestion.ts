@@ -14,14 +14,40 @@ interface EventBody {
 }
 
 export const handler: Handler = async (event, context) => {
+  const headers = event.headers || {};
+  const origin =
+    headers['origin'] ||
+    headers['Origin'] || 
+    headers['ORIGIN'] || 
+    '';
+
+  const allowedOrigins = ['https://www.tonynagy.io', 'https://tonynagy.io'];
+
+  const corsHeaders = {
+    'Access-Control-Allow-Origin': allowedOrigins.includes(origin) ? origin : '',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  };
+
   try {
+    console.log('Headers received:', JSON.stringify(event.headers, null, 2));
+
+    // Preflight request
+    if (event.httpMethod === 'OPTIONS') {
+      return {
+        statusCode: 200,
+        headers: corsHeaders,
+        body: '',
+      };
+    }
+
     const body: EventBody = event.body ? JSON.parse(event.body) : {};
     const question = body.question?.trim();
 
     if (!question) {
       return {
         statusCode: 400,
-        headers: { 'Content-Type': 'application/json' },
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         body: JSON.stringify({ error: 'Missing "question" field in request body.' }),
       };
     }
@@ -53,17 +79,14 @@ export const handler: Handler = async (event, context) => {
 
     return {
       statusCode: 200,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': 'Content-Type',
-      },
+      headers: corsHeaders,
       body: JSON.stringify({ answer: result.text }),
     };
   } catch (err: any) {
     console.error('RAG error:', err);
     return {
       statusCode: 500,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       body: JSON.stringify({ error: 'Internal server error' }),
     };
   }

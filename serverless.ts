@@ -24,10 +24,14 @@ const config: AWS = {
           http: {
             path: 'ask',
             method: 'post',
-            cors: {
-              origin: 'https://www.tonynagy.io',
-              headers: ['Content-Type'],
-            },
+            cors: true,
+          },
+        },
+        {
+          http: {
+            path: 'ask',
+            method: 'options',
+            cors: true,
           },
         },
       ],
