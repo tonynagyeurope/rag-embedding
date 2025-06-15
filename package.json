@@ -22,7 +22,8 @@
     "@types/aws-lambda": "^8.10.149",
     "@types/node": "^24.0.1",
     "esbuild": "^0.25.5",
-    "serverless": "^4.17.0",
+    "serverless": "^3.40.0",
+    "serverless-dotenv-plugin": "^6.0.0",
     "serverless-esbuild": "^1.55.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"

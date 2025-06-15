@@ -5,7 +5,7 @@ import type { AWS } from '@serverless/typescript';
 const config: AWS = {
   service: 'rag-ask-api',
   frameworkVersion: '3',
-  plugins: ['serverless-esbuild'],
+  plugins: ['serverless-esbuild', 'serverless-dotenv-plugin'],
   provider: {
     name: 'aws',
     runtime: 'nodejs20.x',
@@ -13,7 +13,7 @@ const config: AWS = {
     memorySize: 256,
     timeout: 10,
     environment: {
-      OPENAI_API_KEY: '${env:OPENAI_API_KEY}',
+      OPENAI_API_KEY: process.env.OPENAI_API_KEY as string,
     },
   },
   functions: {
@@ -22,9 +22,12 @@ const config: AWS = {
       events: [
         {
           http: {
-            method: 'post',
             path: 'ask',
-            cors: true,
+            method: 'post',
+            cors: {
+              origin: 'https://www.tonynagy.io',
+              headers: ['Content-Type'],
+            },
           },
         },
       ],
