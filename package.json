@@ -1,0 +1,35 @@
+{
+  "name": "rag-embedding",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tonynagyeurope/rag-embedding.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tonynagyeurope/rag-embedding/issues"
+  },
+  "homepage": "https://github.com/tonynagyeurope/rag-embedding#readme",
+  "devDependencies": {
+    "@serverless/typescript": "^4.15.1",
+    "@types/aws-lambda": "^8.10.149",
+    "@types/node": "^24.0.1",
+    "esbuild": "^0.25.5",
+    "serverless": "^4.17.0",
+    "serverless-esbuild": "^1.55.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "langchain": "^0.3.28",
+    "openai": "^5.3.0"
+  }
+}

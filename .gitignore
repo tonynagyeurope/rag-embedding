@@ -1,0 +1,5 @@
+node_modules/
+.env
+vector-store/
+src/data/content/
+src/db/
