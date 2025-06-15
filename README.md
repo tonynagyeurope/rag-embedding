@@ -48,6 +48,7 @@ npx ts-node src/utils/chunkText.ts
 
 # Deploy the Lambda function
 npx serverless deploy
+```
 
 Technologies Used
 
