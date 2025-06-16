@@ -4,6 +4,7 @@ import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
 import { Handler } from 'aws-lambda';
 
+import { DynamoDBClient, PutItemCommand } from '@aws-sdk/client-dynamodb';
 import { OpenAIEmbeddings } from '@langchain/openai';
 import { ChatOpenAI } from '@langchain/openai';
 import { MemoryVectorStore } from 'langchain/vectorstores/memory';
@@ -12,6 +13,9 @@ import { ConversationalRetrievalQAChain } from 'langchain/chains';
 interface EventBody {
   question?: string;
 }
+
+const dynamoDbClient = new DynamoDBClient({ region: 'us-east-1' });
+const CHAT_LOGS_TABLE = 'chat_logs';
 
 export const handler: Handler = async (event, context) => {
   const headers = event.headers || {};
@@ -32,7 +36,6 @@ export const handler: Handler = async (event, context) => {
   try {
     console.log('Headers received:', JSON.stringify(event.headers, null, 2));
 
-    // Preflight request
     if (event.httpMethod === 'OPTIONS') {
       return {
         statusCode: 200,
@@ -76,6 +79,24 @@ export const handler: Handler = async (event, context) => {
       question,
       chat_history: [],
     });
+
+    // Log question and answer to DynamoDB
+    const timestamp = new Date().toISOString();
+    const putCommand = new PutItemCommand({
+      TableName: CHAT_LOGS_TABLE,
+      Item: {
+        id: { S: `${timestamp}#${Math.random().toString(36).substr(2, 9)}` },
+        question: { S: question },
+        answer: { S: result.text },
+        timestamp: { S: timestamp },
+      },
+    });
+
+    try {
+      await dynamoDbClient.send(putCommand);
+    } catch (logError) {
+      console.warn('Failed to log chat interaction:', logError);
+    }
 
     return {
       statusCode: 200,
