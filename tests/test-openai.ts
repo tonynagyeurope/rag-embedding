@@ -12,14 +12,14 @@ async function testChat() {
     const completion = await openai.chat.completions.create({
       model: 'gpt-4o',
       messages: [
-        { role: 'user', content: 'Írj egy haikut a mesterséges intelligenciáról.' },
+        { role: 'user', content: 'Write a haiku about the artificial intelligence!' },
       ],
     });
 
-    console.log('\n✅ Válasz a GPT-4o-tól:\n');
+    console.log('\n Response from GPT-4o: \n');
     console.log(completion.choices[0].message.content);
   } catch (error) {
-    console.error('❌ Hiba történt:', error);
+    console.error('Error occured: ', error);
   }
 }
 
